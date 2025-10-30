@@ -33,7 +33,7 @@ pipeline {
                     
                     # Run gitleaks detect even if from non commited codes
                     exit_code=0
-                    gitleaks detect --source . --verbose --report-path gitleaks-report.json || exit_code=$?
+                    gitleaks detect --source . --no-git --verbose --report-path gitleaks-report.json || exit_code=$?
                     echo $exit_code
                     set -e
                     if [ "$exit_code" -ne 0 ]; then
