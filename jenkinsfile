@@ -32,7 +32,7 @@ pipeline {
                     fi
                     
                     # Run gitleaks detect even if from non commited codes
-                    exit_code=1
+                    exit_code=0
                     gitleaks detect --source . --no-git --verbose --report-path gitleaks-report.json || exit_code=$?
                     echo $exit_code
                     set -e
@@ -53,8 +53,10 @@ pipeline {
                         ]]
                     ]]) {
                     sh '''
-                    docker build -t flask-vault-app .
-                    docker run -d -p 8005:5000 -e API_KEY=$APP1 flask-vault-app
+                    docker rm -f py-app || true
+                    docker rmi -f flask-vault-app:latest || true
+                    docker build -t flask-vault-app:latest .
+                    docker run -d -p 8005:5000 -e API_KEY=$APP1 --name py-app flask-vault-app:latest
                     '''
                     }
                 }
