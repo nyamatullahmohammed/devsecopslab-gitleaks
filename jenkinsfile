@@ -33,11 +33,14 @@ pipeline {
                     
                     # Run gitleaks detect even if from non commited codes
                     gitleaks detect --source . --no-git --verbose --report-path gitleaks-report.json || exit_code=$?
-                    if [ "$exit_code" -eq 1 ]; then
-                        echo "Gitleaks found secrets. Check gitleaks-report.json for details"
-                        exit 1
-                    fi
-                '''
+                    set -e
+                if [ "$exit_code" -ne 0 ]; then
+                    echo "❌ Gitleaks found leaks (exit code $exit_code)"
+                    exit 1
+                else
+                    echo "✅ No leaks found."
+                fi
+                    '''
             }
         }
         stage('Fetch Secret from Vault') {
