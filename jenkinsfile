@@ -31,11 +31,11 @@ pipeline {
                         sudo mv gitleaks /usr/local/bin/
                     fi
                     
-                    # Run gitleaks detect even if from non commited codes
-                    exit_code=0
-                    gitleaks detect --source . --no-git --verbose --report-path gitleaks-report.json || exit_code=$?
-                    echo $exit_code
-                    set -e
+                   echo "🔍 Running Gitleaks scan..."
+                    set +e  # temporarily disable fail-fast
+                    gitleaks detect --source python_app --no-git --verbose --report-path gitleaks-report.json
+                    result=$?  # capture exit status
+                    set -e  # re-enable fail-fast
                     if [ "$exit_code" -ne 0 ]; then
                         echo "❌ Gitleaks found leaks (exit code $exit_code)"
                         exit 1
