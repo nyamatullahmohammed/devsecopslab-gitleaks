@@ -16,7 +16,3 @@ def home():
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
 
-
-    # def connect_to_service():
-#     # ❌ Hardcoded API key — will be caught by GitLeaks (generic-api-key / AWS / Token patterns)
-#     API_KEY = "ghp_abCDeFgHijKLMNOPqrstuVWxyZ012345678"
